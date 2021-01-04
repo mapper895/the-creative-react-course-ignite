@@ -6,6 +6,13 @@ import { motion } from "framer-motion";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { smallImage } from "../util";
+// Images
+import playstation from "../img/playstation.svg";
+import apple from "../img/apple.svg";
+import gamepad from "../img/gamepad.svg";
+import nintendo from "../img/nintendo.svg";
+import steam from "../img/steam.svg";
+import xbox from "../img/xbox.svg";
 
 const GameDetail = ({ pathId }) => {
   const history = useHistory();
@@ -16,6 +23,21 @@ const GameDetail = ({ pathId }) => {
       document.body.style.overflow = "auto";
       history.push("/");
     }
+  };
+  // Get platform images
+  const getPlatform = (platform) => {
+    return (
+      {
+        "PlayStation 4": playstation,
+        "PlayStation 5": playstation,
+        "Xbox Series S/X": xbox,
+        "Xbox S": xbox,
+        "Xbox One": xbox,
+        "Nintendo Switch": nintendo,
+        PC: steam,
+        iOS: apple,
+      }[platform] || gamepad
+    );
   };
   // Data
   const { screen, game, isLoading } = useSelector((state) => state.detail);
@@ -33,7 +55,11 @@ const GameDetail = ({ pathId }) => {
                 <h3>Platforms</h3>
                 <Platforms>
                   {game.platforms.map((data) => (
-                    <h3 key={data.platform.id}>{data.platform.name}</h3>
+                    <img
+                      key={data.platform.id}
+                      src={getPlatform(data.platform.name)}
+                      alt={data.platform.name}
+                    ></img>
                   ))}
                 </Platforms>
               </Info>
@@ -72,6 +98,7 @@ const CardShadow = styled(motion.div)`
   position: fixed;
   left: 0;
   top: 0;
+  z-index: 5;
   &::-webkit-scrollbar-thumb {
     background-color: #ff7676;
   }
@@ -90,6 +117,7 @@ const Detail = styled(motion.div)`
   background: white;
   position: absolute;
   left: 10%;
+  z-index: 10;
   color: white;
   img {
     width: 100%;
